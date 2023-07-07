@@ -1,5 +1,10 @@
 <?php
 
+require_once(__DIR__ . '/../route/conn.php');
+session_start();
+
+
+
 ?>
 
 <!DOCTYPE html>

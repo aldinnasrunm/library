@@ -1,4 +1,28 @@
 <?php
+require_once(__DIR__ . '/../route/conn.php');
+session_start();
+
+if(isset($_POST['submit'])){
+    $username = $_POST['email'];
+    $password = $_POST['password'];
+    $sql = "SELECT * FROM user WHERE user_name='$username' AND password='$password'";
+    $result = mysqli_query($conn, $sql);
+
+    // echo mysqli_fetch_assoc($result);
+
+    if(mysqli_num_rows($result) > 0){
+        $row = mysqli_fetch_assoc($result);
+        echo "username = " . $row['user_name'];
+
+        echo "<script>alert('". $row['user_name'] . "')</script>";
+        $_SESSION['username'] = $row['user_name'];
+        $_SESSION['userid'] = $row['user_id'];
+        $_SESSION['role'] = "user";
+        header("Location: ../index.php");
+    }else{
+        echo "<script>alert('Username atau password salah')</script>";
+    }
+}
 
 ?>
 
@@ -87,13 +111,13 @@
                     </div>
 
                     <div class="flex flex-col w-96 justify-center py-6">
-                        <button type="submit" class="rounded-md px-9 py-3 bg-gray-800 hover:bg-slate-600 transition-all">
+                        <button type="submit" class="rounded-md px-9 py-3 bg-gray-800 hover:bg-slate-600 transition-all" name="submit">
                             <a href="#" class="text-2xl px-2 font-medium leading-6 text-white">Login</a>
                         </button>
                     </div>
                     <hr class="border-[0.15rem]">  
                     <div class="flex flex-col w-96 justify-center py-3">
-                        <button type="submit" class="rounded-md px-9 py-3 border-2 border-gray-900 hover:border-gray-400 transition-all">
+                        <button type="button" class="rounded-md px-9 py-3 border-2 border-gray-900 hover:border-gray-400 transition-all">
                             <a href="register.php" class="text-2xl px-2 font-medium leading-6 text-gray-900 hover:text-gray-400">Create Account</a>
                         </button>
                     </div>

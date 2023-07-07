@@ -1,3 +1,3 @@
 module.exports = {
-  php: "d:/File_Ku/Apps/xampp/php/php.exe"  
+  php: "C:\\xampp\\php\\php.exe"  
 }
