@@ -1,4 +1,28 @@
 <?php
+require_once(__DIR__ . '/route/conn.php');
+session_start();
+
+
+
+$header_status = '<button class="rounded-md px-9 py-2 bg-gray-800 hover:bg-slate-600 transition-all">
+<a href="pages/login.php" class="text-xl px-2 font-semibold leading-6 text-white">Login</a>
+</button>';
+
+if (isset($_SESSION['username'])) {
+    if ($_SESSION['role'] == "admin") {
+        $header_status = '<button class="rounded-md px-9 py-2 bg-gray-800 hover:bg-slate-600 transition-all">
+        <a href="pages/profile-admin.php" class="text-xl px-2 font-semibold leading-6 text-white">'. $_SESSION['username'] .'</a>
+        </button>';
+    }else{
+        $header_status = '<button class="rounded-md px-9 py-2 bg-gray-800 hover:bg-slate-600 transition-all">
+        <a href="pages/profile.php" class="text-xl px-2 font-semibold leading-6 text-white">'. $_SESSION['username'] .'</a>
+        </button>';
+    }
+
+    echo "<script>console.log('user loged')</script>";
+}else{
+    echo "<script>console.log('user not loged'))</script>";
+}
 
 ?>
 
@@ -26,10 +50,11 @@
             <a href="#about" class="text-xl px-2 font-semibold leading-6 text-gray-800">About</a>
         </div>
 
+        <?php 
+            echo $header_status;
+        
+        ?>
 
-        <button class="rounded-md px-9 py-2 bg-gray-800 hover:bg-slate-600 transition-all">
-            <a href="pages/login.php" class="text-xl px-2 font-semibold leading-6 text-white">Login</a>
-        </button>
 
     </nav>
 
@@ -42,7 +67,7 @@
             </h1>
 
             <div class="w-5/6 image__hero items-center justify-between flex flex-row">
-                <img src="/dist/image/book-group.png" alt="" class="w-2/6 hover:scale-110 transition-all">
+                <img src="dist/image/book-group.png" alt="" class="w-2/6 hover:scale-110 transition-all">
 
                 <p class="text-2xl font-normal w-3/6">Discover a world of boundless imagination, endless learning, and unparalleled exploration at our Online Library. Whether you're an avid reader, a dedicated scholar, or a curious mind seeking inspiration, our virtual shelves are brimming with literary treasures that will transport you to extraordinary realms and expand your intellectual horizons.</p>
             </div>
@@ -67,7 +92,7 @@
                         <p class="text-white text-xs">Bagian pertama mengambil sudut pandang seorang mahasiswa aktivis bernama Laut, menceritakan bagaimana Laut dan kawan-kawannya menyusun rencana, berpindah-pindah dalam pelarian, hingga tertangkap oleh pasukan rahasia. </p>
 
                     </div>
-                    <img src="/dist/image/laut-bercerita.jpg" alt="">
+                    <img src="dist/image/laut-bercerita.jpg" alt="">
 
                 </div>
 
@@ -80,7 +105,7 @@
                         <p class="text-white text-xs">Almustafa, hendak kembali ke negerinya dengan menaiki sebuah kapal. Keberangkatannya tertunda oleh pertanyaan-pertanyaan tentang misteri kehidupan yang diajukan oleh penduduk kota.</p>
 
                     </div>
-                    <img src="/dist/image/mata-yang-enak-dipandang.jpg" alt="">
+                    <img src="dist/image/mata-yang-enak-dipandang.jpg" alt="">
 
                 </div>
 
@@ -92,7 +117,7 @@
                         <hr>
                         <p class="text-white text-xs">Almustafa, hendak kembali ke negerinya dengan menaiki sebuah kapal. Keberangkatannya tertunda oleh pertanyaan-pertanyaan tentang misteri kehidupan yang diajukan oleh penduduk kota.</p>
                     </div>
-                    <img src="/dist/image/Al_Mustafa_Republish.jpg" alt="">
+                    <img src="dist/image/Al_Mustafa_Republish.jpg" alt="">
 
                 </div>
 

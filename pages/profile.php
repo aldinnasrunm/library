@@ -1,4 +1,22 @@
 <?php
+session_start();
+require_once(__DIR__ . '/../route/conn.php');
+
+$userId = $_SESSION['userid'];
+$username = $_SESSION['username'];
+$role = $_SESSION['role'];
+
+$query = mysqli_query($conn, "SELECT * FROM user WHERE user_id='$userId'");
+$result = mysqli_fetch_assoc($query);
+
+if (isset($_POST['logout'])) {
+    // User is logged in, perform logout
+    session_unset(); // Unset all session variables
+    session_destroy(); // Destroy the session
+    // Redirect to the login page or any other desired page
+    header("Location: login.php");
+    exit();
+}
 
 ?>
 
@@ -49,20 +67,26 @@
                         Username
                     </p>
                     <p class="text-xl font-normal">
-                        Adinkkkk
+                        <?php echo $username ?>
                     </p>
 
                     <p class="text-xl font-semibold py-2">
                         Contact
                     </p>
                     <p class="text-xl font-normal">
-                        085700118877
+                        <?php echo $result['user_contact']; ?>
                     </p>
-                    
 
-                    <button type="submit" class="px-3 py-2 bg-gray-900 text-white hover:bg-gray-600 rounded-md my-3">
-                        Reset Password
-                    </button>
+                    <form action="" method="post">
+                        <button type="submit" name="changepassword" class="px-3 py-2 bg-gray-900 text-white hover:bg-gray-600 rounded-md my-3">
+                            Change Password
+                        </button>
+
+                        <button type="submit" name="logout" class="px-3 py-2 bg-red-700 text-white hover:bg-red-400 rounded-md my-3">
+                            Logout
+                        </button>
+                    </form>
+
 
                 </div>
 
