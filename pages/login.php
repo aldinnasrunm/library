@@ -72,32 +72,37 @@
         <div class="container form w-1/2">
             <!-- create login form -->
             <div class="container w-full flex justify-center">
-            <form action="" method="post" class="flex flex-col justify-center ">
-                <h1 class="text-5xl font-bold text-gray-900">Hey, hello 👋</h1>
-                <p class="text-gray-600 text-lg font-normal py-2">Enter the credentials of your account</p>
+                <form action="" method="post" class="flex flex-col justify-center ">
+                    <h1 class="text-5xl font-bold text-gray-900">Hey, hello 👋</h1>
+                    <p class="text-gray-600 text-lg font-normal py-2">Enter the credentials of your account</p>
 
-                <div class="flex flex-col justify-center py-2">
-                    <label for="email" class="text-xl font-light text-gray-800 py-2">Username</label>
-                    <input type="email" name="email" id="email" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
-                </div>
+                    <div class="flex flex-col justify-center py-2">
+                        <label for="email" class="text-xl font-light text-gray-800 py-2">Username</label>
+                        <input type="text" name="email" id="email" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
+                    </div>
 
-                <div class="flex flex-col justify-center py-2">
-                    <label for="password" class="text-xl font-light text-gray-800 py-2">Password</label>
-                    <input type="password" name="password" id="password" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
-                </div>
+                    <div class="flex flex-col justify-center py-2">
+                        <label for="password" class="text-xl font-light text-gray-800 py-2">Password</label>
+                        <input type="password" name="password" id="password" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
+                    </div>
 
-                <div class="flex flex-col w-96 justify-center py-6">
-                    <button type="submit" class="rounded-md px-9 py-3 bg-gray-800 hover:bg-slate-600 transition-all">
-                        <a href="#" class="text-2xl px-2 font-medium leading-6 text-white">Login</a>
-                    </button>
-                </div>
-                <hr>
-                <div class="flex flex-col w-96 justify-center py-3">
-                    <button type="submit" class="rounded-md px-9 py-3 border-2 border-gray-900 hover:border-gray-400 transition-all">
-                        <a href="register.php" class="text-2xl px-2 font-medium leading-6 text-gray-900 hover:text-gray-400">Create Account</a>
-                    </button>
-                </div>
-            </form>
+                    <div class="flex flex-col w-96 justify-center py-6">
+                        <button type="submit" class="rounded-md px-9 py-3 bg-gray-800 hover:bg-slate-600 transition-all">
+                            <a href="#" class="text-2xl px-2 font-medium leading-6 text-white">Login</a>
+                        </button>
+                    </div>
+                    <hr class="border-[0.15rem]">  
+                    <div class="flex flex-col w-96 justify-center py-3">
+                        <button type="submit" class="rounded-md px-9 py-3 border-2 border-gray-900 hover:border-gray-400 transition-all">
+                            <a href="register.php" class="text-2xl px-2 font-medium leading-6 text-gray-900 hover:text-gray-400">Create Account</a>
+                        </button>
+                    </div>
+
+                    <p class="text-xl px-2 text-center font-medium leading-6">
+                        Login as
+                        <a href="login-admin.php" class="text-blue-500 hover:text-blue-800">admin</a>
+                    </p>
+                </form>
             </div>
         </div>
     </div>

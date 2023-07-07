@@ -52,14 +52,6 @@
                         Adinkkkk
                     </p>
 
-                    <p class="text-xl font-semibold py-2">
-                        Contact
-                    </p>
-                    <p class="text-xl font-normal">
-                        085700118877
-                    </p>
-                    
-
                     <button type="submit" class="px-3 py-2 bg-gray-900 text-white hover:bg-gray-600 rounded-md my-3">
                         Reset Password
                     </button>
@@ -73,43 +65,64 @@
             <div class="bg-white h-full border-2 border-gray-900 drop-shadow-2xl rounded-xl">
                 <div class="wrapper m-6">
                     <p class="text-2xl font-semibold py-2 text-center my-2">
-                        Book Lended
+                        Book Lend Information
                     </p>
-                    <div class="flex flex-wrap gap-4">
-                        <div class="book__list flex flex-wrap" id="book__list">
-                            <div class="book1 bg-white drop-shadow-xl px-6 border-2 border-gray-600 py-2 rounded-lg mx-7">
-                                <div class="book__img">
-                                    <img src="../dist/image/mata-yang-enak-dipandang.jpg" class="w-24">
-                                </div>
-                                <div class="book__detail">
-                                    <p class="text-lg font-semibold py-2">
-                                        Judul Buku
-                                    </p>
-                                    <p class="text-md font-normal">
-                                        Penulis
-                                    </p>
-                                    <p class="text-md font-normal">
-                                        Tahun Terbit
-                                    </p>
-                                </div>
-                            </div>
+
+                    <!-- searchbar -->
+                    <div class="container mx-auto py-8">
+                        <div class="mb-6">
+                            <input id="searchInput" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Search book...">
                         </div>
+
+                        <!-- table number, book name, user, lend date, return button -->
+                        <table class="min-w-full bg-white">
+                            <thead>
+                                <tr>
+                                    <th class="py-3 px-6 text-left">Table Number</th>
+                                    <th class="py-3 px-6 text-left">Book Name</th>
+                                    <th class="py-3 px-6 text-left">User</th>
+                                    <th class="py-3 px-6 text-left">Lend Date</th>
+                                    <th class="py-3 px-6 text-left">Return</th>
+                                </tr>
+                            </thead>
+                            <tbody id="book__list">
+                                <!-- Add more rows as needed -->
+                            </tbody>
+                        </table>
 
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <script type="text/javascript">
+            var list__contianer = document.getElementById("book__list");
+            var phd = '';
+            for (let x = 0; x < 7; x++) {
+                phd = phd + '<tr> <td class="py-4 px-6 border-b">1</td> <td class="py-4 px-6 border-b">Book A</td> <td class="py-4 px-6 border-b">John Doe</td> <td class="py-4 px-6 border-b">2023-07-01</td> <td class="py-4 px-6 border-b"> <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Return</button> </td> </tr>';
+                list__contianer.innerHTML = phd;
+            };
 
 
-    <script type="text/javascript">
-        var list__contianer = document.getElementById("book__list");
-        var phd = '';
-        for (let x = 0; x < 7; x++) {
-            phd = phd + '<div class="book1 bg-white drop-shadow-xl px-6 border-2 border-gray-600 py-2 rounded-lg mx-7 my-3"> <div class="book__img"> <img src="../dist/image/mata-yang-enak-dipandang.jpg" class="w-24"> </div> <div class="book__detail"> <p class="text-lg font-semibold py-2"> Judul Buku </p> <p class="text-md font-normal"> Penulis </p> <p class="text-md font-normal"> jadwal kembali </p> </div> </div>';
-            list__contianer.innerHTML = phd;
-        };
-    </script>
+
+            // search bar
+
+            const searchInput = document.getElementById('searchInput');
+            const tableRows = document.querySelectorAll('tbody tr');
+
+            searchInput.addEventListener('input', function(event) {
+                const searchTerm = event.target.value.toLowerCase();
+
+                tableRows.forEach(row => {
+                    const bookName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    if (bookName.includes(searchTerm)) {
+                        row.style.display = 'table-row';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        </script>
 </body>
 
 </html>

@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../dist/style/output.css">
-    <title>Register</title>
+    <title>Login</title>
 </head>
 
 <body>
@@ -73,8 +73,8 @@
             <!-- create login form -->
             <div class="container w-full flex justify-center">
             <form action="" method="post" class="flex flex-col justify-center ">
-                <h1 class="text-4xl font-bold text-gray-900">Create new account here</h1>
-                <p class="text-gray-600 text-lg font-normal py-2">Enter the information for your new account</p>
+                <h1 class="text-5xl font-bold text-gray-900">Hello admin 👨‍💻</h1>
+                <p class="text-gray-600 text-lg font-normal py-2">Enter the secret formula below</p>
 
                 <div class="flex flex-col justify-center py-2">
                     <label for="email" class="text-xl font-light text-gray-800 py-2">Username</label>
@@ -86,22 +86,25 @@
                     <input type="password" name="password" id="password" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
                 </div>
 
-                <div class="flex flex-col justify-center py-2">
-                    <label for="password" class="text-xl font-light text-gray-800 py-2">Re-enter Password</label>
-                    <input type="password" name="password" id="password" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
-                </div>
-
                 <div class="flex flex-col w-96 justify-center py-6">
                     <button type="submit" class="rounded-md px-9 py-3 bg-gray-800 hover:bg-slate-600 transition-all">
-                        <a href="#" class="text-2xl px-2 font-medium leading-6 text-white">Register</a>
+                        <a href="#" class="text-2xl px-2 font-medium leading-6 text-white">Login</a>
                     </button>
                 </div>
-                
-                
+                <hr class="border-[0.15rem]">
+                <p class="text-xl py-2 text-center font-medium leading-6">
+                        Login as
+                        <a href="login.php" class="text-blue-500 hover:text-blue-800">user</a>
+                    </p>
             </form>
             </div>
         </div>
     </div>
+
+
+
+
+
 
 </body>
 
