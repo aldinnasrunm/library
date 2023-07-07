@@ -185,15 +185,14 @@
     <script type="text/javascript">
     var list__container = document.getElementById("list__container");
     var phd = '';
-    
     var count = 0;
     for (var x = 0; x < items.length; x++) {
         phd += '<div class="book1 m-10 w-72 bg-white border-2 drop-shadow-2xl border-gray-700 flex flex-col justify-between items-center py-8 rounded-xl">';
-        phd += "<img src='/dist/image/'"+items[count].imageurl+ 'alt="" class="w-56">';
+        phd += '<img src="/dist/image/'+items[count].imageurl+'" alt="" class="w-56">';
         phd += '<div class="text p-6 w-full">';
         phd += '<p class="text-xl font-bold mt-4">' + items[count].book_title + '</p>';
         phd += '<p class="text-xl">'+ items[count].book_author +'</p>';
-        phd += '<button class="button text-lg font-semibold mx-auto w-full text-white bg-gray-900 hover:bg-gray-600 py-2 rounded-md mt-3 transition-all"><a href="book-view.php">Selengkapnya</a></button>';
+        phd += '<form action="book-view.php" method="get"><button class="button text-lg font-semibold mx-auto w-full text-white bg-gray-900 hover:bg-gray-600 py-2 rounded-md mt-3 transition-all" name="variable" value='+count+'>Selengkapnya</button></form>';
         phd += '</div>';
         phd += '</div>';
         count ++;

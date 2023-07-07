@@ -1,4 +1,22 @@
 <?php
+    require_once(__DIR__ . '/../route/conn.php');
+    $cari='SELECT * FROM book';
+    $hasil_cari=mysqli_query($conn, $cari);
+    // Check if there are any rows returned
+    if (mysqli_num_rows($hasil_cari) > 0) {
+        // Fetch all rows into an array
+        $items = mysqli_fetch_all($hasil_cari, MYSQLI_ASSOC);
+    } else {
+        $items = array(); // Empty array if no items found
+    }
+
+    // Convert the items array to JSON format
+    $items_json = json_encode($items);
+
+    // Pass the JSON data to JavaScript
+    echo "<script>";
+    echo "var items = " . $items_json . ";";
+    echo "</script>";
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +39,7 @@
 
         <div class="lg:flex justify-center flex-grow lg:gap-x-12">
             <a href="../index.php" class="text-xl  px-2 font-semibold leading-6 text-gray-800">Home</a>
-            <a href="#" class="text-xl px-2 font-semibold leading-6 text-gray-800">Books</a>
+            <a href="/pages/books.php" class="text-xl px-2 font-semibold leading-6 text-gray-800">Books</a>
             <a href="#" class="text-xl px-2 font-semibold leading-6 text-gray-800">About</a>
         </div>
 
@@ -32,7 +50,7 @@
 
     </nav>
 
-    <div class="conntainer py-32 book__details mx-auto h-screen w-4/6 flex justify-center">
+    <!-- <div class="conntainer py-32 book__details mx-auto h-screen w-4/6 flex justify-center">
         <div class="book__image flex w-1/3">
             <div class="image ">
                 <img src="../dist/image/Al_Mustafa_Republish.jpg" alt="">
@@ -54,6 +72,10 @@
 
             <button type="button" class="bg-gray-900 hover:bg-gray-600 text-center text-white py-2 rounded-md transition-all">Lend</button>
         </div>
+
+    </div> -->
+
+    <div class='list__container flex flex flex-wrap' id="list__container">
 
     </div>
 
@@ -145,7 +167,16 @@
         <p class="text-xl text-center text-white">Made with 🧡</p>
 
     </footer>
-
+    
+    <script type="text/javascript">
+    var list__container = document.getElementById("list__container");
+    var urlParams = new URLSearchParams(window.location.search);
+    var count = urlParams.get('variable');
+    var phd = '';
+    phd+='<div class="conntainer py-32 book__details mx-auto h-screen w-4/6 flex justify-center"> <div class="book__image flex w-1/3"><div class="image "><img src="../dist/image/'+items[count].imageurl+'" alt=""></div></div>'
+    phd+='<div class="book__info flex flex-col w-2/3 pl-20"><p class="text-3xl text-gray-900 font-semibold">'+items[count].book_title+'</p><p class="text-xl text-gray-900 font-semibold">'+items[count].book_author+'</p><hr><p class="text-xl text-gray-900 font-medium">Description</p><p class="text-lg text-gray-900"> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Beatae animi quibusdam tempora aliquam harum quia aspernatur voluptates minus iusto esse dolore consequuntur, fugiat aut sint. Impedit dolorem nulla tempora non.</p><p class="text-lg text-gray-900 font-bold">Stock : 4</p><button type="button" class="bg-gray-900 hover:bg-gray-600 text-center text-white py-2 rounded-md transition-all">Lend</button></div></div>'
+    list__container.innerHTML = phd;
+    </script>
 </body>
 
 </html>
