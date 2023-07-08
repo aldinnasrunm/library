@@ -9,11 +9,43 @@ $role = $_SESSION['role'];
 $query = mysqli_query($conn, "SELECT * FROM user WHERE user_id='$userId'");
 $result = mysqli_fetch_assoc($query);
 
+// Check if there are any rows returned
+$query2 = mysqli_query($conn, "SELECT lend.lend_id, lend.date, user.user_name, book.book_title, book.book_author FROM lend JOIN user ON lend.user_id = user.user_id JOIN book ON lend.book_id = book.book_id WHERE lend.user_id = '$userId';");
+// $bookResult = mysqli_fetch_assoc($query2);
+
+// Check if there are any rows returned
+if (mysqli_num_rows($query2) > 0) {
+    // Fetch all rows into an array
+    $booksResult = mysqli_fetch_all($query2, MYSQLI_ASSOC);
+} else {
+    $booksResult = array(); // Empty array if no items found
+}
+
+// $bookResults = array(); // Initialize an empty array to store the results
+
+// while ($row = mysqli_fetch_assoc($query2)) {
+//     $bookResults[] = $row; // Add each row to the results array
+// }
+
+// // Process the query results
+// foreach ($bookResults as $bookResult) {
+//     // Access individual rows using $bookResult
+//     echo $bookResult['lend_id']; // Replace 'column_name' with the actual column name from the 'lend' table
+// }
+
+$books = json_encode($booksResult);
+
+echo "<script>";
+echo "var books = " . $books . " ;";
+
+echo "</script>";
+
+
 if (isset($_POST['logout'])) {
-    // User is logged in, perform logout
+
     session_unset(); // Unset all session variables
     session_destroy(); // Destroy the session
-    // Redirect to the login page or any other desired page
+
     header("Location: login.php");
     exit();
 }
@@ -52,9 +84,9 @@ if (isset($_POST['logout'])) {
     </nav>
 
     <div class="h-full w-full flex items-center pt-52">
-        <div class="w-1/4 h-full pl-20">
-            <div class="bg-white h-full drop-shadow-2xl rounded-xl border-2 border-gray-900">
-                <div class="wrapper m-6">
+        <div class="w-1/4  pl-20">
+            <div class="bg-white drop-shadow-2xl rounded-xl border-2 border-gray-900">
+                <div class="wrapper h-fit m-6 flex flex-col">
                     <div class="img__profile w-32 rouned-full pb-5">
                         <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 100" fill="none">
                             <circle cx="50" cy="50" r="48" fill="white" stroke="#828282" stroke-width="4" />
@@ -92,7 +124,7 @@ if (isset($_POST['logout'])) {
 
             </div>
         </div>
-        <div class="w-3/4 h-full ml-24 px-20">
+        <div class="w-3/4 h-fit ml-24 px-20 flex justify-center items-center">
             <!-- show book list -->
             <div class="bg-white h-full border-2 border-gray-900 drop-shadow-2xl rounded-xl">
                 <div class="wrapper m-6">
@@ -101,22 +133,7 @@ if (isset($_POST['logout'])) {
                     </p>
                     <div class="flex flex-wrap gap-4">
                         <div class="book__list flex flex-wrap" id="book__list">
-                            <div class="book1 bg-white drop-shadow-xl px-6 border-2 border-gray-600 py-2 rounded-lg mx-7">
-                                <div class="book__img">
-                                    <img src="../dist/image/mata-yang-enak-dipandang.jpg" class="w-24">
-                                </div>
-                                <div class="book__detail">
-                                    <p class="text-lg font-semibold py-2">
-                                        Judul Buku
-                                    </p>
-                                    <p class="text-md font-normal">
-                                        Penulis
-                                    </p>
-                                    <p class="text-md font-normal">
-                                        Tahun Terbit
-                                    </p>
-                                </div>
-                            </div>
+                            
                         </div>
 
                     </div>
@@ -129,10 +146,11 @@ if (isset($_POST['logout'])) {
     <script type="text/javascript">
         var list__contianer = document.getElementById("book__list");
         var phd = '';
-        for (let x = 0; x < 7; x++) {
-            phd = phd + '<div class="book1 bg-white drop-shadow-xl px-6 border-2 border-gray-600 py-2 rounded-lg mx-7 my-3"> <div class="book__img"> <img src="../dist/image/mata-yang-enak-dipandang.jpg" class="w-24"> </div> <div class="book__detail"> <p class="text-lg font-semibold py-2"> Judul Buku </p> <p class="text-md font-normal"> Penulis </p> <p class="text-md font-normal"> jadwal kembali </p> </div> </div>';
-            list__contianer.innerHTML = phd;
+        console.log(books[0]);
+        for (var x = 0; x < books.length; x++) {
+            phd = phd + '<div class="book1 bg-white drop-shadow-xl px-6 border-2 border-gray-600 py-2 rounded-lg mx-7 my-3"> <div class="book__img"> <img src="../dist/image/mata-yang-enak-dipandang.jpg" class="w-24"> </div> <div class="book__detail"> <p class="text-lg font-semibold py-2"> '+ books[x].book_title+' </p> <p class="text-md font-normal"> '+ books[x].book_author+' </p> </div> </div>';
         };
+        list__contianer.innerHTML = phd;
     </script>
 </body>
 
