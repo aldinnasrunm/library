@@ -1,14 +1,31 @@
 <?php
-
 require_once(__DIR__ . '/../route/conn.php');
 session_start();
 
 
+$username = $_SESSION['username'];
+$userid = $_SESSION['userid'];
+
+
+$query = mysqli_query($conn, "SELECT * FROM administrator WHERE admin_id = '$userid'");
+$result = mysqli_fetch_assoc($query);
+
+if (isset($_POST['logout'])) {
+
+    session_unset(); // Unset all session variables
+    session_destroy(); // Destroy the session
+
+    header("Location: login-admin.php");
+    exit();
+}
+
 
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
+
 
 <head>
     <meta charset="UTF-8">
@@ -17,26 +34,19 @@ session_start();
     <title>User Detail</title>
 </head>
 
+
 <body>
-
     <nav class="flex items-center justify-between w-full p-6 bg-white ">
-
         <div class="flex flex-none">
             <p class="font-bold text-xl">Library X</p>
         </div>
-
         <div class="lg:flex justify-center flex-grow lg:gap-x-12">
             <a href="../index.php" class="text-xl  px-2 font-semibold leading-6 text-gray-800">Home</a>
             <a href="books.php" class="text-xl px-2 font-semibold leading-6 text-gray-800">Books</a>
-            <a href="#" class="text-xl px-2 font-semibold leading-6 text-gray-800">About</a>
+            <a href="../index.php#about" class="text-xl px-2 font-semibold leading-6 text-gray-800">About</a>
         </div>
-
-
-        <button class="rounded-md px-9 py-2 bg-gray-800 hover:bg-slate-600 transition-all">
-            <a href="#" class="text-xl px-2 font-semibold leading-6 text-white">Login</a>
-        </button>
-
     </nav>
+
 
     <div class="h-full w-full flex items-center pt-52">
         <div class="w-1/4 h-full pl-20">
@@ -49,36 +59,26 @@ session_start();
                             <ellipse cx="50" cy="32.5" rx="21" ry="20.5" fill="#828282" />
                         </svg>
                     </div>
-
-                    <p class="text-xl font-semibold py-2">
-                        Username
-                    </p>
-                    <p class="text-xl font-normal">
-                        Adinkkkk
-                    </p>
-
-                    <button type="submit" class="px-3 py-2 bg-gray-900 text-white hover:bg-gray-600 rounded-md my-3">
-                        Reset Password
-                    </button>
-
+                    <p class="text-xl font-semibold py-2">Username</p>
+                    <p class="text-xl font-normal"><?php echo $username; ?></p>
+                    <form action="" method="post">
+                        <button type="submit" name="logout" class="px-3 py-2 bg-red-700 text-white hover:bg-red-400 rounded-md my-3">
+                            Logout
+                        </button>
+                    </form>
                 </div>
-
             </div>
         </div>
         <div class="w-3/4 h-full ml-24 px-20">
             <!-- show book list -->
             <div class="bg-white h-full border-2 border-gray-900 drop-shadow-2xl rounded-xl">
                 <div class="wrapper m-6">
-                    <p class="text-2xl font-semibold py-2 text-center my-2">
-                        Book Lend Information
-                    </p>
-
+                    <p class="text-2xl font-semibold py-2 text-center my-2">Book Lend Information</p>
                     <!-- searchbar -->
                     <div class="container mx-auto py-8">
                         <div class="mb-6">
                             <input id="searchInput" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Search book...">
                         </div>
-
                         <!-- table number, book name, user, lend date, return button -->
                         <table class="min-w-full bg-white">
                             <thead>
@@ -91,32 +91,39 @@ session_start();
                                 </tr>
                             </thead>
                             <tbody id="book__list">
-                                <!-- Add more rows as needed -->
+                                <?php
+                                $lendQuery = mysqli_query($conn, "SELECT lend.lend_id, book.book_title, user.user_name, lend.date
+                                    FROM lend
+                                    INNER JOIN user ON lend.user_id = user.user_id
+                                    INNER JOIN book ON lend.book_id = book.book_id");
+                                while ($lendRow = mysqli_fetch_assoc($lendQuery)) {
+                                    echo '<tr>
+                                            <td class="py-4 px-6 border-b">' . $lendRow['lend_id'] . '</td>
+                                            <td class="py-4 px-6 border-b">' . $lendRow['book_title'] . '</td>
+                                            <td class="py-4 px-6 border-b">' . $lendRow['user_name'] . '</td>
+                                            <td class="py-4 px-6 border-b">' . $lendRow['date'] . '</td>
+                                            <td class="py-4 px-6 border-b">
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="returnBook(' . $lendRow['lend_id'] . ')">Return</button>
+                                            </td>
+                                        </tr>';
+                                }
+                                ?>
                             </tbody>
-                        </table>
 
+
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-
         <script type="text/javascript">
-            var list__contianer = document.getElementById("book__list");
-            var phd = '';
-            for (let x = 0; x < 7; x++) {
-                phd = phd + '<tr> <td class="py-4 px-6 border-b">1</td> <td class="py-4 px-6 border-b">Book A</td> <td class="py-4 px-6 border-b">John Doe</td> <td class="py-4 px-6 border-b">2023-07-01</td> <td class="py-4 px-6 border-b"> <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Return</button> </td> </tr>';
-                list__contianer.innerHTML = phd;
-            };
-
-
-
-            // search bar
-
             const searchInput = document.getElementById('searchInput');
             const tableRows = document.querySelectorAll('tbody tr');
 
+
             searchInput.addEventListener('input', function(event) {
                 const searchTerm = event.target.value.toLowerCase();
+
 
                 tableRows.forEach(row => {
                     const bookName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
@@ -127,7 +134,30 @@ session_start();
                     }
                 });
             });
+
+
+            function returnBook(lendId) {
+                if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+                    // Mengirim permintaan AJAX ke server untuk menghapus data
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "delete_lend.php", true);
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            // Memperbarui tampilan setelah data dihapus
+                            if (xhr.responseText === "success") {
+                                location.reload(); // Memuat ulang halaman setelah penghapusan berhasil
+                            } else {
+                                alert("Gagal menghapus data.");
+                            }
+                        }
+                    };
+                    xhr.send("lend_id=" + lendId);
+                }
+            }
         </script>
+    </div>
 </body>
+
 
 </html>

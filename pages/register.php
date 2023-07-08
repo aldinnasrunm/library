@@ -1,4 +1,45 @@
 <?php
+require_once(__DIR__ . '/../route/conn.php');
+session_start();
+
+if (isset($_POST['register'])) {
+    $username = $_POST['email'];
+    $contact = $_POST['user_contact'];
+    $password = $_POST['password'];
+    $reEnterPassword = $_POST['re_enter_password'];
+
+    if (!empty($username) && !empty($contact) && !empty($password) && !empty($reEnterPassword)) {
+        if ($password === $reEnterPassword) {
+            $checkUsernameQuery = "SELECT * FROM user WHERE user_name='$username'";
+            $checkUsernameResult = mysqli_query($conn, $checkUsernameQuery);
+
+            if (mysqli_num_rows($checkUsernameResult) > 0) {
+                echo "<script>alert('Username sudah digunakan')</script>";
+            } else {
+                // Tambahkan data pengguna ke database
+                $registerQuery = "INSERT INTO user (user_name, user_contact ,password) VALUES ('$username', '$contact' ,'$password')";
+                $registerResult = mysqli_query($conn, $registerQuery);
+
+                if ($registerResult) {
+                    echo "<script>alert('Pendaftaran berhasil. Silakan login dengan akun yang baru dibuat.'); window.location = 'login.php'; </script>";
+                    // goToLogin();
+                } else {
+                    echo "<script>alert('Terjadi kesalahan. Gagal mendaftar.')</script>";
+                }
+            }
+        } else {
+            echo "<script>alert('Konfirmasi password tidak cocok')</script>";
+        }
+    } else {
+        echo "<script>alert('Harap lengkapi semua field')</script>";
+    }
+}
+
+function goToLogin()
+{
+    header("Location: login.php");
+    exit();
+}
 
 ?>
 
@@ -28,7 +69,7 @@
 
 
         <button class="rounded-md px-9 py-2 bg-gray-800 hover:bg-slate-600 transition-all">
-            <a href="#" class="text-xl px-2 font-semibold leading-6 text-white">Login</a>
+            <a href="login.php" class="text-xl px-2 font-semibold leading-6 text-white">Login</a>
         </button>
 
     </nav>
@@ -72,33 +113,36 @@
         <div class="container form w-1/2">
             <!-- create login form -->
             <div class="container w-full flex justify-center">
-            <form action="" method="post" class="flex flex-col justify-center ">
-                <h1 class="text-4xl font-bold text-gray-900">Create new account here</h1>
-                <p class="text-gray-600 text-lg font-normal py-2">Enter the information for your new account</p>
+                <form action="" method="post" class="flex flex-col justify-center ">
+                    <h1 class="text-4xl font-bold text-gray-900">Create new account here</h1>
+                    <p class="text-gray-600 text-lg font-normal py-2">Enter the information for your new account</p>
 
-                <div class="flex flex-col justify-center py-2">
-                    <label for="email" class="text-xl font-light text-gray-800 py-2">Username</label>
-                    <input type="text" name="email" id="email" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
-                </div>
+                    <div class="flex flex-col justify-center py-2">
+                        <label for="email" class="text-xl font-light text-gray-800 py-2">Username</label>
+                        <input type="text" name="email" id="email" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
+                    </div>
 
-                <div class="flex flex-col justify-center py-2">
-                    <label for="password" class="text-xl font-light text-gray-800 py-2">Password</label>
-                    <input type="password" name="password" id="password" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
-                </div>
+                    <div class="flex flex-col justify-center py-2">
+                        <label for="password" class="text-xl font-light text-gray-800 py-2">Password</label>
+                        <input type="password" name="password" id="password" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
+                    </div>
 
-                <div class="flex flex-col justify-center py-2">
-                    <label for="password" class="text-xl font-light text-gray-800 py-2">Re-enter Password</label>
-                    <input type="password" name="password" id="password" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
-                </div>
+                    <div class="flex flex-col justify-center py-2">
+                        <label for="password" class="text-xl font-light text-gray-800 py-2">Re-enter Password</label>
+                        <input type="password" name="re_enter_password" id="password" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
+                    </div>
 
-                <div class="flex flex-col w-96 justify-center py-6">
-                    <button type="submit" class="rounded-md px-9 py-3 bg-gray-800 hover:bg-slate-600 transition-all">
-                        <a href="#" class="text-2xl px-2 font-medium leading-6 text-white">Register</a>
-                    </button>
-                </div>
-                
-                
-            </form>
+                    <div class="flex flex-col justify-center py-2">
+                        <label for="user_contact" class="text-xl font-light text-gray-800 py-2">Email</label>
+                        <input type="email" name="user_contact" id="user_contact" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
+                    </div>
+
+                    <div class="flex flex-col w-96 justify-center py-6">
+                        <button type="submit" name="register" class="rounded-md px-9 py-3 bg-gray-800 hover:bg-slate-600 transition-all">
+                            <p class="text-2xl px-2 font-medium leading-6 text-white">Register</p>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

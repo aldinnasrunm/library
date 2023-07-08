@@ -1,9 +1,35 @@
 <?php
+require_once(__DIR__ . '/../route/conn.php');
+session_start();
 
+
+
+
+if(isset($_POST['login'])){
+    $username = $_POST['email'];
+    $password = $_POST['password'];
+    $sql = "SELECT * FROM administrator WHERE admin_name='$username' AND password='$password'";
+    $result = mysqli_query($conn, $sql);
+
+    // echo mysqli_fetch_assoc($result);
+    if(mysqli_num_rows($result) > 0){
+        $row = mysqli_fetch_assoc($result);
+        $_SESSION['username'] = $row['admin_name'];
+        $_SESSION['userid'] = $row['admin_id'];
+        $_SESSION['role'] = "admin";
+        header("Location: ../index.php");
+    }else{
+        echo "<script>alert('Username atau password salah')</script>";
+    }
+}
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
+
 
 <head>
     <meta charset="UTF-8">
@@ -12,13 +38,17 @@
     <title>Login</title>
 </head>
 
+
 <body>
 
+
     <nav class="flex items-center justify-between absolute w-full p-6 bg-white ">
+
 
         <div class="flex flex-none">
             <p class="font-bold text-xl">Library X</p>
         </div>
+
 
         <div class="lg:flex justify-center flex-grow lg:gap-x-12">
             <a href="../index.php" class="text-xl  px-2 font-semibold leading-6 text-gray-800">Home</a>
@@ -27,13 +57,18 @@
         </div>
 
 
+
+
         <button class="rounded-md px-9 py-2 bg-gray-800 hover:bg-slate-600 transition-all">
             <a href="#" class="text-xl px-2 font-semibold leading-6 text-white">Login</a>
         </button>
 
+
     </nav>
 
+
     <div class="h-screen w-full flex items-center ">
+
 
         <div class="container form w-1/2 h-full">
             <svg width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -67,7 +102,9 @@
                 </defs>
             </svg>
 
+
         </div>
+
 
         <div class="container form w-1/2">
             <!-- create login form -->
@@ -76,21 +113,25 @@
                 <h1 class="text-5xl font-bold text-gray-900">Hello admin 👨‍💻</h1>
                 <p class="text-gray-600 text-lg font-normal py-2">Enter the secret formula below</p>
 
+
                 <div class="flex flex-col justify-center py-2">
                     <label for="email" class="text-xl font-light text-gray-800 py-2">Username</label>
                     <input type="text" name="email" id="email" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
                 </div>
+
 
                 <div class="flex flex-col justify-center py-2">
                     <label for="password" class="text-xl font-light text-gray-800 py-2">Password</label>
                     <input type="password" name="password" id="password" class="border-2 border-gray-800 rounded-md px-2 py-2 w-96">
                 </div>
 
+
                 <div class="flex flex-col w-96 justify-center py-6">
-                    <button type="submit" class="rounded-md px-9 py-3 bg-gray-800 hover:bg-slate-600 transition-all">
-                        <a href="#" class="text-2xl px-2 font-medium leading-6 text-white">Login</a>
+                    <button type="submit" name="login" class="rounded-md px-9 py-3 bg-gray-800 hover:bg-slate-600 transition-all text-white">
+                        Login
                     </button>
                 </div>
+
                 <hr class="border-[0.15rem]">
                 <p class="text-xl py-2 text-center font-medium leading-6">
                         Login as
@@ -100,11 +141,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
 
 </body>
 

@@ -1,5 +1,7 @@
 <?php
     require_once(__DIR__ . '/../route/conn.php');
+    session_start();
+
     $cari='SELECT * FROM book';
 
     $hasil_cari=mysqli_query($conn, $cari);
@@ -14,6 +16,29 @@
 
     // Convert the items array to JSON format
     $items_json = json_encode($items);
+
+    $header_status = '<button class="rounded-md px-9 py-2 bg-gray-800 hover:bg-slate-600 transition-all">
+<a href="login.php" class="text-xl px-2 font-semibold leading-6 text-white">Login</a>
+</button>';
+
+if (isset($_SESSION['username'])) {
+    if ($_SESSION['role'] == "admin") {
+        $header_status = '<button class="rounded-md px-9 py-2 bg-gray-800 hover:bg-slate-600 transition-all">
+        <a href="profile-admin.php" class="text-xl px-2 font-semibold leading-6 text-white">'. $_SESSION['username'] .'</a>
+        </button>';
+    }else{
+        $header_status = '<button class="rounded-md px-9 py-2 bg-gray-800 hover:bg-slate-600 transition-all">
+        <a href="profile.php" class="text-xl px-2 font-semibold leading-6 text-white">'. $_SESSION['username'] .'</a>
+        </button>';
+    }
+
+    echo "<script>console.log('user loged')</script>";
+}else{
+    echo "<script>console.log('user not loged'))</script>";
+}
+
+
+
 
     // Pass the JSON data to JavaScript
     echo "<script>";
@@ -42,14 +67,14 @@
         <div class="lg:flex justify-center flex-grow lg:gap-x-12">
             <a href="../index.php" class="text-xl  px-2 font-semibold leading-6 text-gray-800">Home</a>
             <a href="#" class="text-xl px-2 font-semibold leading-6 text-gray-800">Books</a>
-            <a href="#" class="text-xl px-2 font-semibold leading-6 text-gray-800">About</a>
+            <a href="../index.php#about" class="text-xl px-2 font-semibold leading-6 text-gray-800">About</a>
         </div>
 
 
-        <button class="rounded-md px-9 py-2 bg-gray-800 hover:bg-slate-600 transition-all">
-            <a href="login.php" class="text-xl px-2 font-semibold leading-6 text-white">Login</a>
-        </button>
-
+        <?php 
+            echo $header_status;
+        
+        ?>
     </nav>
 
 
@@ -63,7 +88,7 @@
     <!-- Book container -->
     <div class="container book__list h-screen flex flex-col  mx-auto">
         <!-- form search with full width-->
-        <div class="searchbar flex justify-center">
+        <div class="searchbar flex justify-center hidden">
             <form action="" class="flex flex-row justify-center w-full">
                 <input type="text" class="border-2 border-gray-300 rounded-md p-2 w-full " placeholder="Search">
                 <button class="rounded-md px-9 py-2 bg-gray-800 hover:bg-slate-600 transition-all">
@@ -71,7 +96,6 @@
                 </button>
             </form>
         </div>
-
         <div class="list__container flex flex flex-wrap" id="list__container">
             <!-- <div class="book1 m-10 w-72 bg-white border-2 drop-shadow-2xl border-gray-700 flex flex-col justify-between items-center py-8 rounded-xl"> 
                 <img src="/dist/image/mata-yang-enak-dipandang.jpg" alt="" class="w-56">
@@ -92,17 +116,15 @@
     var count = 0;
     for (var x = 0; x < items.length; x++) {
         phd += '<div class="book1 m-10 w-72 bg-white border-2 drop-shadow-2xl border-gray-700 flex flex-col justify-between items-center py-8 rounded-xl">';
-        phd += '<img src="/dist/image/'+items[count].imageurl+'" alt="" class="w-56">';
+        phd += '<img src="../dist/image/'+items[count].imageurl+'" alt="" class="w-56">';
         phd += '<div class="text p-6 w-full">';
         phd += '<p class="text-xl font-bold mt-4">' + items[count].book_title + '</p>';
         phd += '<p class="text-xl">'+ items[count].book_author +'</p>';
-        phd += '<form action="book-view.php" method="get"><button class="button text-lg font-semibold mx-auto w-full text-white bg-gray-900 hover:bg-gray-600 py-2 rounded-md mt-3 transition-all" name="variable" value='+count+'>Selengkapnya</button></form>';
+        phd += '<form action="book-view.php" method="get"><button class="button text-lg font-semibold mx-auto w-full text-white bg-gray-900 hover:bg-gray-600 py-2 rounded-md mt-3 transition-all" name="variable" value='+items[count].book_id+'>Selengkapnya</button></form>';
         phd += '</div>';
         phd += '</div>';
         count ++;
     }
-
-    
 
     list__container.innerHTML = phd;
 </script>

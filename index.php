@@ -46,7 +46,7 @@ if (isset($_SESSION['username'])) {
 
         <div class="lg:flex justify-center flex-grow lg:gap-x-12">
             <a href="#" class="text-xl  px-2 font-semibold leading-6 text-gray-800">Home</a>
-            <a href="/pages/books.php" class="text-xl px-2 font-semibold leading-6 text-gray-800">Books</a>
+            <a href="pages/books.php" class="text-xl px-2 font-semibold leading-6 text-gray-800">Books</a>
             <a href="#about" class="text-xl px-2 font-semibold leading-6 text-gray-800">About</a>
         </div>
 
@@ -222,22 +222,22 @@ if (isset($_SESSION['username'])) {
 
                 <ul class="py-4 sm:text-s pt-4 text-gray-400">
                     <li class="pb-1">
-                        <a href="/">
+                        <a href="#">
                             Home
                         </a>
                     </li>
                     <li class="pb-1">
-                        <a href="/blog">
-                            Blog
+                        <a href="pages/books.php">
+                            Books
                         </a>
                     </li>
                     <li class="pb-1">
-                        <a href="/login">
+                        <a href="pages/login.php">
                             Login
                         </a>
                     </li>
                     <li class="pb-1">
-                        <a href="/register">
+                        <a href="pages/register.php">
                             Register
                         </a>
                     </li>
@@ -291,7 +291,7 @@ if (isset($_SESSION['username'])) {
                     </li>
                     <li class="pb-1">
                         <a href="/">
-                            Why to use Laravel
+                            Why to use thi app?
                         </a>
             </div>
         </div>
