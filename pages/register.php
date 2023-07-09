@@ -2,29 +2,42 @@
 require_once(__DIR__ . '/../route/conn.php');
 session_start();
 
+
 if (isset($_POST['register'])) {
     $username = $_POST['email'];
     $contact = $_POST['user_contact'];
     $password = $_POST['password'];
     $reEnterPassword = $_POST['re_enter_password'];
 
+
+    // Periksa apakah username dan password sudah diisi
     if (!empty($username) && !empty($contact) && !empty($password) && !empty($reEnterPassword)) {
+        // Periksa apakah password yang dimasukkan sesuai dengan konfirmasi password
         if ($password === $reEnterPassword) {
+            // Periksa apakah username sudah ada dalam database
             $checkUsernameQuery = "SELECT * FROM user WHERE user_name='$username'";
             $checkUsernameResult = mysqli_query($conn, $checkUsernameQuery);
+
 
             if (mysqli_num_rows($checkUsernameResult) > 0) {
                 echo "<script>alert('Username sudah digunakan')</script>";
             } else {
-                // Tambahkan data pengguna ke database
-                $registerQuery = "INSERT INTO user (user_name, user_contact ,password) VALUES ('$username', '$contact' ,'$password')";
-                $registerResult = mysqli_query($conn, $registerQuery);
+                // Periksa panjang password
+                if (strlen($password) >= 8) {
+                    // Tambahkan data pengguna ke database
+                    $registerQuery = "INSERT INTO user (user_name, user_contact ,password) VALUES ('$username', '$contact' ,'$password')";
+                    $registerResult = mysqli_query($conn, $registerQuery);
 
-                if ($registerResult) {
-                    echo "<script>alert('Pendaftaran berhasil. Silakan login dengan akun yang baru dibuat.'); window.location = 'login.php'; </script>";
-                    // goToLogin();
+
+                    if ($registerResult) {
+                        echo "<script>alert('Pendaftaran berhasil. Silakan login dengan akun yang baru dibuat.')</script>";
+                        header("Location: login.php");
+                        exit();
+                    } else {
+                        echo "<script>alert('Terjadi kesalahan. Gagal mendaftar.')</script>";
+                    }
                 } else {
-                    echo "<script>alert('Terjadi kesalahan. Gagal mendaftar.')</script>";
+                    echo "<script>alert('Password harus memiliki panjang minimal 8 karakter')</script>";
                 }
             }
         } else {

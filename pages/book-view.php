@@ -1,5 +1,4 @@
 <?php
-
 require_once(__DIR__ . '/../route/conn.php');
 session_start();
 
@@ -14,18 +13,15 @@ LEFT JOIN (
     SELECT book_id, SUM(1) AS total_borrowed
     FROM lend
     GROUP BY book_id
-) l ON b.book_id = l.book_id;';
+) l ON b.book_id = l.book_id WHERE b.book_id = '.$bookID.' ;';
 
 $hasil_cari = mysqli_query($conn, $cari);
-// Check if there are any rows returned
 if (mysqli_num_rows($hasil_cari) > 0) {
-    // Fetch all rows into an array
     $items = mysqli_fetch_all($hasil_cari, MYSQLI_ASSOC);
 } else {
     $items = array(); // Empty array if no items found
 }
 
-// Convert the items array to JSON format
 $items_json = json_encode($items);
 
 flog($bookID);
@@ -62,6 +58,7 @@ if (isset($_POST['lend'])) {
         $result = mysqli_query($conn, $query);
         if ($result) {
             echo "<script>alert('Book has been lend!')</script>";
+            header("Refresh:0");
         } else {
             echo "<script>alert('Failed to lend book!')</script>";
         }
@@ -100,11 +97,6 @@ function flog($message)
             <a href="books.php" class="text-xl px-2 font-semibold leading-6 text-gray-800">Books</a>
             <a href="../index.php#about" class="text-xl px-2 font-semibold leading-6 text-gray-800">About</a>
         </div>
-
-
-        <button class="rounded-md px-9 py-2 bg-gray-800 hover:bg-slate-600 transition-all">
-            <a href="login.php" class="text-xl px-2 font-semibold leading-6 text-white">Login</a>
-        </button>
 
     </nav>
     <div class='list__container flex flex flex-wrap' id="list__container">
@@ -204,7 +196,7 @@ function flog($message)
     <script type="text/javascript">
         var list__container = document.getElementById("list__container");
         var urlParams = new URLSearchParams(window.location.search);
-        var count = parseInt(urlParams.get('variable')) - 1;
+        var count = 0;
         var phd = '';
         console.log(uRole);
         phd += '<div class="conntainer py-32 book__details mx-auto h-screen w-4/6 flex justify-center"> <div class="book__image flex w-1/3"><div class="image "><img src="../dist/image/' + items[count].imageurl + '" alt=""></div></div>';
