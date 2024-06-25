@@ -79,11 +79,15 @@ if (isset($_POST['logout'])) {
                         <div class="mb-6">
                             <input id="searchInput" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Search book...">
                         </div>
+
+                        <button id="btn_show_members" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"> Show Members </button>
+                        <button id="btn_lend_info" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"> Show Lend Information </button>
+
                         <!-- table number, book name, user, lend date, return button -->
-                        <table class="min-w-full bg-white">
+                        <table id="table_lend" class="min-w-full bg-white collapse">
                             <thead>
                                 <tr>
-                                    <th class="py-3 px-6 text-left">Table Number</th>
+                                    <th class="py-3 px-6 text-left">Number</th>
                                     <th class="py-3 px-6 text-left">Book Name</th>
                                     <th class="py-3 px-6 text-left">User</th>
                                     <th class="py-3 px-6 text-left">Lend Date</th>
@@ -112,13 +116,62 @@ if (isset($_POST['logout'])) {
 
 
                         </table>
+
+                        <table id="table_users" class="min-w-full bg-white visible">
+                            <thead>
+                                <tr>
+                                    <th class="py-3 px-6 text-left">ID</th>
+                                    <th class="py-3 px-6 text-left">User Name</th>
+                                    <th class="py-3 px-6 text-left">Email </th>
+                                    <th class="py-3 px-6 text-left">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="book__list">
+                                <?php
+                                $usersQuery = mysqli_query($conn, "SELECT * FROM user"); ;
+                                while ($user = mysqli_fetch_assoc($usersQuery)) {
+                                    echo '<tr>
+                                            <td class="py-4 px-6 border-b">' . $user['user_id'] . '</td>
+                                            <td class="py-4 px-6 border-b">' . $user['user_name'] . '</td>
+                                            <td class="py-4 px-6 border-b">' . $user['user_contact'] . '</td>
+                                            <td class="py-4 px-6 border-b">
+                                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="removeUser(' . $user['user_id'] . ')">Remove</button>
+                                            </td>
+                                        </tr>';
+                                }
+                                ?>
+                            </tbody>
+
+
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
         <script type="text/javascript">
             const searchInput = document.getElementById('searchInput');
+            const btnShowMembers = document.getElementById('btn_show_members');
+            const btnLendInfo = document.getElementById('btn_lend_info');
+            const tableUsers = document.getElementById('table_users');
+            const tableLend = document.getElementById('table_lend');
+                        
             const tableRows = document.querySelectorAll('tbody tr');
+
+            btnShowMembers.addEventListener('click', function() {
+                tableUsers.classList.add('visible');
+                tableUsers.classList.remove('collapse');
+                tableLend.classList.remove('visible');
+                tableLend.classList.add('collapse');
+            });
+
+            btnLendInfo.addEventListener('click', function() {
+                tableLend.classList.add('visible');
+                tableLend.classList.remove('collapse');
+                tableUsers.classList.remove('visible');
+                tableUsers.classList.add('collapse');
+            });
+
+
 
 
             searchInput.addEventListener('input', function(event) {
@@ -155,6 +208,31 @@ if (isset($_POST['logout'])) {
                     xhr.send("lend_id=" + lendId);
                 }
             }
+
+
+            function removeUser(userID) {
+                if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+                    // Mengirim permintaan AJAX ke server untuk menghapus data
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "delete_user.php", true);
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            // Memperbarui tampilan setelah data dihapus
+                            if (xhr.responseText === "success") {
+                                location.reload(); // Memuat ulang halaman setelah penghapusan berhasil
+                            } else {
+                                alert("Gagal menghapus data.");
+                            }
+                        }
+                    };
+                    xhr.send("user_id=" + userID);
+                }
+            }
+
+            
+
+
         </script>
     </div>
 </body>
