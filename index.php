@@ -167,19 +167,10 @@ if (isset($_SESSION['username'])) {
             <div class="author__wrap flex justify-between">
 
                 <div class="author1 w-1/4 px-9 flex text-gray-900 flex-col items-center ease-in-out duration-200 ">
-                    <div class="image hover:scale-105 transition-all">
-                        <img src="dist/image/author1.jpg" alt="" class="rounded-full drop-shadow-2xl">
-                    </div>
-                    <p class="text-2xl font-bold mt-10">Abdul Khadir D.</p>
-                    <p class="text-lg font-normal">Programmer</p>
-                </div>
-
-                
-                <div class="author1 w-1/4 px-9 flex text-gray-900 flex-col items-center ease-in-out duration-200 ">
                     <div class="image hover:scale-110 transition-all">
                         <img src="dist/image/author2.jpg" alt="" class="rounded-full drop-shadow-2xl">
                     </div>
-                    <p class="text-2xl font-bold mt-10">Aprilia Puspita A.</p>
+                    <p class="text-2xl font-bold mt-10">Rafli.</p>
                     <p class="text-lg font-normal">Designer</p>
                 </div>
                 
@@ -198,7 +189,7 @@ if (isset($_SESSION['username'])) {
                         <img src="dist/image/author4.jpg" alt="" class="rounded-full drop-shadow-2xl">
                     </div>
                     <p class="text-2xl font-bold mt-10">A. Nasrun Minalloh</p>
-                    <p class="text-lg font-normal">Project Manager</p>
+                    <p class="text-lg font-normal">Programmer</p>
                 </div>
                 
             </div>
